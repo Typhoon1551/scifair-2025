@@ -21,9 +21,10 @@ def convert_board_minimax(board, side):
 
 def run_game(agent):
     game = ai.TicTacToeGame()
-    player = random.choice([0, 1])
+    player = 1 #random.choice([0, 1])
     side_x = player
     while game.playable():
+        print(player)
         if player == 0:
             move = agent.play_select_move(game)
         elif player == 1:
@@ -31,49 +32,29 @@ def run_game(agent):
         if move in game.allowed_moves():
             game.make_move(move)
             player = 1 - player
-    match game.predict_winner(game.state):
-        case 'X':
-            return side_x
-        case 'O':
-            return 1 - side_x
-        case None:
-            return 2
+        game.print_board()
+        time.sleep(0.5)
 
 def minimax_choose(game):
     depth = len(game.allowed_moves())
-    if depth == 9:
-        n = random.randrange(9)
-    else:
-        match game.player:
-            case 'X':
-                p = -1
-            case 'O':
-                p = +1
-        m = minimax.minimax(convert_board_minimax(game, game.player), depth, p)
-        n = (m[0] * 3) + m[1]
+    print(convert_board_minimax(game, game.player))
+    match game.player:
+        case 'X':
+            p = -1
+        case 'O':
+            p = +1
+    m = minimax.minimax(convert_board_minimax(game, game.player), depth, p)
+    print(m)
+    n = m[1] * 3 + m[0]
+    print(n)
     r = list(game.state)
     r[n] = game.player
+    print(''.join(r))
     return ''.join(r)
-
-def run_series(num_games, agent):
-    results = [0, 0, 0, 0]
-    for i in range(num_games):
-        r = run_game(agent)
-        results[r] += 1
-        results[3] += 1
-    return results
 
 if __name__ == '__main__':
     agent = ai.Agent(ai.TicTacToeGame)
-    e = [10000, 50000, 100000, 500000, 1000000]
-    v = [0]
+    agent.learn_game(50000)
 
-    for i in e:
-        agent.learn_game(i - sum(v))
-        print(f"agent trained over {i} episodes")
-
-        r = run_series(1000, agent)
-        print(r)
-
-        v.append(i)
+    run_game(agent)
 
