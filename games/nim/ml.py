@@ -180,7 +180,7 @@ def train(n):
 
     # Play n games
     for i in range(n):
-        print(f"Playing training game {i + 1}")
+        #print(f"Playing training game {i + 1}")
         game = Nim()
         
         # Keep track of last move made by either player
@@ -224,7 +224,7 @@ def train(n):
                     0
                 )
 
-    print("Done training")
+    #print("Done training")
 
     # Return the trained AI
     return player

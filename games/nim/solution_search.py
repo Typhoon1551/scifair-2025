@@ -41,7 +41,7 @@ def find_next(state):
     
     for i in range(len(state)):
         for m in range(1, state[i] + 1):
-            temp = list(state[:])
+            temp = list(state.copy())
             temp[i] -= m
             
             # check if the stage already exists
