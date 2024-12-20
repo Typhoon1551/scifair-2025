@@ -4,23 +4,27 @@ import random
 
 def run_game(ai_agent):
     board = [random.randrange(1,6) for i in range(random.randrange(2,6))]
-    player = random.choice(['mx','ml'])
+    player = random.choice([0,1])
+    players = ['mx', 'ml']
 
     #print(board)
 
-    while sum(board) != 0:
+    while sum(board) > 1:
         #print(player)
         match player:
-            case'mx':
+            case 0:
                 board = mx.decide(board, -float('inf'), float('inf'), True)[1][1]
-                player = 'ml'
-            case 'ml':
+                player = 1
+            case 1:
                 pile, count = ai_agent.choose_action(board, epsilon=False)
                 board[pile] -= count
-                player = 'mx'
+                player = 0
         #print(board)
 
-    return player
+    if sum(board) == 1:
+        return players[1 - player]
+    else:
+        return players[player]
 
 def run_series(games, ai_agent):
     score = [0,0,0]
